@@ -19,7 +19,6 @@ return {
       ensure_installed = {
         "vim",
         "tsx",
-        "jsx",
         "lua",
         "vimdoc",
         "html",
@@ -27,6 +26,7 @@ return {
         "cpp",
         "typescript",
         "javascript",
+        "json",
       },
       highlight = {
         enable = true,
@@ -34,4 +34,49 @@ return {
       },
     },
   },
+  {
+    "hrsh7th/nvim-cmp",
+    requires = {
+      "hrsh7th/cmp-nvim-lsp",
+      "hrsh7th/cmp-buffer",
+      "hrsh7th/cmp-path",
+      "hrsh7th/cmp-cmdline",
+      "hrsh7th/cmp-nvim-lua",
+      "saadparwaiz1/cmp_luasnip",
+    },
+    config = function()
+      local cmp = require 'cmp'
+      cmp.setup {
+        snippet = {
+          expand = function(args)
+            require('luasnip').lsp_expand(args.body)
+          end,
+        },
+        mapping = {
+          ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+          ['<C-f>'] = cmp.mapping.scroll_docs(4),
+          ['<C-Space>'] = cmp.mapping.complete(),
+          ['<C-e>'] = cmp.mapping.close(),
+          ['<CR>'] = cmp.mapping.confirm({
+            behavior = cmp.ConfirmBehavior.Replace,
+            select = true,
+          }),
+        },
+        sources = {
+          { name = 'nvim_lsp' },
+          { name = 'luasnip' },
+          { name = 'buffer' },
+          { name = 'path' },
+        },
+      }
+    end,
+  },
+
+  {
+    "mattn/emmet-vim",
+    config = function()
+      vim.g.user_emmet_leader_key = '<C-Z>' -- Optional: Change the leader key for Emmet
+    end,
+  },
+
 }

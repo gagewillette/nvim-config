@@ -7,8 +7,6 @@ local M = {}
 M.base46 = {
   theme = "flexoki",
   hl_override = {
-    Normal = { bg = "none" },
-    NormalFloat = { bg = "none" },
     Comment = { italic = true },
     ["@comment"] = { italic = true },
   },
