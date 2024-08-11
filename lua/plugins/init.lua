@@ -43,6 +43,7 @@ return {
       "hrsh7th/cmp-cmdline",
       "hrsh7th/cmp-nvim-lua",
       "saadparwaiz1/cmp_luasnip",
+      "onsails/lspkind"
     },
     config = function()
       local cmp = require 'cmp'
@@ -61,6 +62,25 @@ return {
             behavior = cmp.ConfirmBehavior.Replace,
             select = true,
           }),
+          ['<Tab>'] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_next_item()
+            elseif vim.fn  == 1 then
+              vim.fn.feedkeys(t("<Plug>(vsnip-expand-or-jump)"), "")
+            else
+              fallback()
+            end
+          end, { "i", "s" }),
+          ['<S-Tab>'] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_prev_item()
+            elseif vim.fn["vsnip#jumpable"](-1) == 1 then
+              vim.fn.feedkeys(t("<Plug>(vsnip-jump-prev)"), "")
+            else
+              fallback()
+            end
+          end, { "i", "s" }),
+
         },
         sources = {
           { name = 'nvim_lsp' },
